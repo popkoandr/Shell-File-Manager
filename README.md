@@ -1,5 +1,5 @@
 # Shell-File-Manager
-file manager like total commander
+files manager like total commander
 
 This program allows you to do different operation with 
-file on your storage and use different two file windows side by side (like total commander).
+files on your storage and use two file windows side by side (like total commander).
