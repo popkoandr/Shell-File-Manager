@@ -1,0 +1,234 @@
+﻿<Window x:Class="Shell.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="Shell" Height="457.173" WindowStartupLocation="CenterScreen" MinHeight="300" MinWidth="500">
+
+    <Window.Resources>
+        <Style x:Key="ShellCtrl" TargetType="{x:Type ContentControl}">
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="58.8"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <ControlTemplate x:Key="BtnAddBookmarkTemplate">
+                                    <Grid Height="20" Width="20">
+                                        <Image Source="/Shell;component/ButtonIcons/AddBookmark_btn.png"/>
+                                    </Grid>
+                                </ControlTemplate>
+                                <Style TargetType="Button" x:Key="BtnAddBookmarkStyle">
+                                    <Setter Property="Template" Value="{StaticResource BtnAddBookmarkTemplate}"/>
+                                </Style>
+
+                                <ControlTemplate x:Key="BtnUndo">
+                                    <Grid Height="20" Width="20">
+                                        <Image Source="/Shell;component/ButtonIcons/undo_btn.png"/>
+                                    </Grid>
+                                </ControlTemplate>
+                                <Style TargetType="Button" x:Key="BtnUndoStyle">
+                                    <Setter Property="Template" Value="{StaticResource BtnUndo}"/>
+                                </Style>
+
+                                <ControlTemplate x:Key="BtnRedo">
+                                    <Grid Height="20" Width="20">
+                                        <Image Source="/Shell;component/ButtonIcons/redo_btn.png"/>
+                                    </Grid>
+                                </ControlTemplate>
+                                <Style TargetType="Button" x:Key="BtnRedoStyle">
+                                    <Setter Property="Template" Value="{StaticResource BtnRedo}"/>
+                                </Style>
+
+                                <ControlTemplate x:Key="GoBtnTemplate">
+                                    <Grid>
+                                        <Ellipse Fill="White" Width="20" Height="20"/>
+                                        <Label Content="Go" FontWeight="SemiBold"/>
+                                    </Grid>
+                                </ControlTemplate>
+                                <Style TargetType="Button" x:Key="GoBtnStyle">
+                                    <Setter Property="Template" Value="{StaticResource GoBtnTemplate}"/>
+                                </Style>
+
+                                <ControlTemplate x:Key="CloneBtnTemplate">
+                                    <Grid>
+                                        <Ellipse Fill="White" Width="20" Height="20"/>
+                                        <Label Content="Clone" FontWeight="SemiBold"/>
+                                    </Grid>
+                                </ControlTemplate>
+                                <Style TargetType="Button" x:Key="CloneBtnStyle">
+                                    <Setter Property="Template" Value="{StaticResource CloneBtnTemplate}"/>
+                                </Style>
+
+                                <ControlTemplate x:Key="DeleteBtnTemplate">
+                                    <Grid>
+                                        <Label Content="X" FontWeight="Bold" Foreground="DarkRed"/>
+                                    </Grid>
+                                </ControlTemplate>
+                                <Style TargetType="Button" x:Key="DeleteBtnStyle">
+                                    <Setter Property="Template" Value="{StaticResource DeleteBtnTemplate}"/>
+                                    <Setter Property="Command" Value="{Binding DeleteBookmarkCommand}"/>
+                                </Style>
+
+                            </Grid.Resources>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="55"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="25"/>
+                                    <ColumnDefinition Width="25"/>
+                                    <ColumnDefinition Width="25"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox x:Name="cbDisks1" Grid.Column="0" Width="45" Margin="5,2" ItemsSource="{Binding LocalDisks}" SelectedItem="{Binding SelectedDisk, Mode=OneWayToSource}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding OpenDiskCommand}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                                <TextBox Margin="5,2" TextWrapping="Wrap" Height="23" VerticalAlignment="Top" Grid.Column="1" Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Margin="2,2" Grid.Column="2" Style="{StaticResource BtnAddBookmarkStyle}" Command="{Binding AddBookmarkCommand}"/>
+                                <Button Margin="2,2" Grid.Column="3" Style="{StaticResource BtnUndoStyle}" Command="{Binding UndoCommand}"/>
+                                <Button Margin="2,2" Grid.Column="4" Style="{StaticResource BtnRedoStyle}" Command="{Binding RedoCommand}"/>
+                            </Grid>
+                            <DataGrid x:Name="lbExplorer1" Grid.Row="1" Grid.Column="0" BorderThickness="2" Margin="5,2,2.4,8.2" SelectedItem="{Binding SelectedFile}"  ItemsSource="{Binding Files}" AutoGenerateColumns="False" IsReadOnly="True" HorizontalGridLinesBrush="#FFB9B4B4" VerticalGridLinesBrush="#FFBBB8B8" GridLinesVisibility="None" CanUserReorderColumns="False" Background="White">
+                                <DataGrid.Resources>
+                                    <DataTemplate x:Key="FileNameTemplate">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding IconIS}"/>
+                                            <TextBlock Text=" "/>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="File name" CellTemplate="{StaticResource FileNameTemplate}" Width="300"/>
+                                    <DataGridTextColumn Header="Extension" Binding="{Binding Extension}" Width="70"/>
+                                    <DataGridTextColumn Header="Size" Binding="{Binding SizeFormat}" />
+                                </DataGrid.Columns>
+                                <DataGrid.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenCommand}"/>
+                                </DataGrid.InputBindings>
+
+                            </DataGrid>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="42"/>
+                                    <ColumnDefinition Width="20"/>
+
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Content="Bookmarks:" Foreground="DarkBlue"/>
+                                <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedBookmark}" ItemsSource="{Binding Bookmarks}"/>
+                                <Button Style="{StaticResource GoBtnStyle}" Grid.Column="2" HorizontalAlignment="Center" Command="{Binding GoBookmarkCommand}"/>
+                                <Button Style="{StaticResource CloneBtnStyle}" Grid.Column="3" Command="{Binding CloneBookmarkCommand}"/>
+                                <Button Style="{StaticResource DeleteBtnStyle}" Grid.Column="4" Command="{Binding DeleteBookmarkCommand}"/>
+                            </Grid>
+                            <Grid Grid.Row="3">
+                                <Grid.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="VerticalAlignment" Value="Top"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="Margin" Value="5,0,0,0"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label x:Name="lblFirstFileName" Content="{Binding FileName}" Grid.Column="0" Grid.Row="0"/>
+                                <Label x:Name="lblFirstFileSize" Content="{Binding FileSize}" Grid.Column="0" Grid.Row="1"/>
+                                <Label x:Name="lblFirstFileInfo1" Content="{Binding FileInfo1}" Grid.Column="1" Grid.Row="0"/>
+                                <Label x:Name="lblFirstFileInfo2" Content="{Binding FileInfo2}" Grid.Column="1" Grid.Row="1"/>
+                            </Grid>
+                            <Grid Grid.Row="4" Margin="0,0,2,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Smart shell:" Grid.Column="0"/>
+                                <TextBox Grid.Column="1" Text="{Binding CommandText, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox.InputBindings>
+                                        <KeyBinding Key="Enter" Command="{Binding SmartSayCommand}"/>
+                                    </TextBox.InputBindings>
+                                </TextBox>
+                                <Button Grid.Column="2" Command="{Binding SmartSayCommand}" Width="30" Content="Say"/>
+                            </Grid>
+                            </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CopyCommand}" Key="F1"/>
+        <KeyBinding Command="{Binding CopyCommand}" Modifiers="Ctrl" Key="C"/>
+        <KeyBinding Command="{Binding CutCommand}" Key="F2"/>
+        <KeyBinding Command="{Binding CutCommand}" Modifiers="Ctrl" Key="X"/>
+        <KeyBinding Command="{Binding PasteCommand}" Key="F3"/>
+        <KeyBinding Command="{Binding PasteCommand}" Modifiers="Ctrl" Key="V"/>
+        <KeyBinding Command="{Binding DeleteCommand}" Key="F4"/>
+        <KeyBinding Command="{Binding DeleteCommand}" Key="Delete"/>
+        <KeyBinding Command="{Binding CreateFolderCommand}" Key="F5"/>
+        <KeyBinding Command="{Binding CreateFileCommand}" Key="F6"/>
+        <KeyBinding Command="{Binding FindCommand}" Key="F7"/>
+        <KeyBinding Command="{Binding FindCommand}" Modifiers="Control" Key="F"/>
+    </Window.InputBindings>
+
+    <DockPanel Background="PaleTurquoise">
+        <Grid Height="50" Background="LightSkyBlue" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="Margin" Value="4,10,4,10"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="FontSize" Value="11"/>
+                </Style>
+            </Grid.Resources>
+            
+            <Button x:Name="btnCopy" Content="Copy (F1)" Grid.Column="0" Command="{Binding CopyCommand}"/>
+            <Button x:Name="btnCut" Content="Cut (F2)" Grid.Column="1" Command="{Binding CutCommand}"/>
+            <Button x:Name="btnPaste" Content="Paste (F3)" Grid.Column="2" Command="{Binding PasteCommand}"/>
+            <Button x:Name="btnDelete" Content="Delete (F4)" Grid.Column="3" Command="{Binding DeleteCommand}"/>
+            <Button x:Name="btnNewFolder" Content="Create Folder (F5)" Grid.Column="4" Command="{Binding CreateFolderCommand}"/>
+            <Button x:Name="btnNewTxtFile" Content="Create file (F6)" Grid.Column="5" Command="{Binding CreateFileCommand}"/>
+            <Button x:Name="btnFind" Content="Find from here (F7)" Grid.Column="6" Command="{Binding FindCommand}"/>
+        </Grid>
+
+        <Grid x:Name="grExplorers" ClipToBounds="True">          
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ContentControl x:Name="LeftShellControl" Style="{StaticResource ShellCtrl}" Grid.Column="0" />
+            <ContentControl x:Name="RightShellControl" Style="{StaticResource ShellCtrl}" Grid.Column="1"/>
+        </Grid>
+    </DockPanel>
+
+</Window>

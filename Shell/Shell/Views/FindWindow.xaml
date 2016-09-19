@@ -1,0 +1,11 @@
+﻿<Window x:Class="Shell.Views.FindWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Find" Height="121.6" Width="268.8" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Background="PaleTurquoise">
+        <Label Content="Name:" Margin="10,10,0,0" HorizontalAlignment="Left" Width="42" Height="28" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbName" Margin="54,10,0,0" HorizontalAlignment="Left" Width="193" Height="28" VerticalAlignment="Top"/>
+        <Button x:Name="btnFind" Width="100" Height="30" Content="Find" Margin="10,43,0,0" VerticalAlignment="Top" Background="White" HorizontalAlignment="Left" Click="btnFind_Click"/>
+        <Button x:Name="btnCancel" Width="100" Height="30" Content="Cancel" Margin="148,43,0,0" VerticalAlignment="Top" Background="White" HorizontalAlignment="Left" Click="btnCancel_Click"/>
+    </Grid>
+</Window>
