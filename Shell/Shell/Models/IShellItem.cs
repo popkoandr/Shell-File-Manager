@@ -21,17 +21,17 @@ namespace Shell.Models
         public abstract void Review();
         public virtual ObservableCollection<IShellItem> GetFilesInside()
         {
-                ObservableCollection<IShellItem> _filesInside = new ObservableCollection<IShellItem>();
+                ObservableCollection<IShellItem> filesInside = new ObservableCollection<IShellItem>();
 
                 var folders = Directory.GetDirectories(GetNameWithLocation());
 
                 foreach (var folder in folders)
-                    _filesInside.Add(new Folder(Path.GetDirectoryName(folder), new DirectoryInfo(folder).Name));
+                    filesInside.Add(new Folder(Path.GetDirectoryName(folder), new DirectoryInfo(folder).Name));
                 var files = Directory.GetFiles(GetNameWithLocation());
 
                 foreach (var file in files)
-                    _filesInside.Add(new File(Path.GetFileNameWithoutExtension(file), Path.GetDirectoryName(file), Path.GetExtension(file)));
-                return _filesInside;
+                    filesInside.Add(new File(Path.GetFileNameWithoutExtension(file), Path.GetDirectoryName(file), Path.GetExtension(file)));
+                return filesInside;
         }
 
         protected virtual void SetIcon()
