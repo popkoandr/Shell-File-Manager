@@ -190,8 +190,8 @@
         <KeyBinding Command="{Binding FindCommand}" Modifiers="Control" Key="F"/>
     </Window.InputBindings>
 
-    <DockPanel Background="PaleTurquoise">
-        <Grid Height="50" Background="LightSkyBlue" DockPanel.Dock="Top">
+    <DockPanel Background="Gainsboro">
+        <Grid Height="50" Background="Gray" DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
